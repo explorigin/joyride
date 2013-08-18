@@ -182,10 +182,11 @@
         opts.tip_class = opts.tip_class || '';
 
         $blank = $(settings.template.tip).addClass(opts.tip_class);
-        content = $.trim($(opts.li).html()) +
-          methods.button_text(opts.button_text) +
-          settings.template.link +
-          methods.timer_instance(opts.index);
+        content = $.trim($(opts.li).html());
+        if (content.indexOf('joyride-next-tip') == -1)
+          content += methods.button_text(opts.button_text);
+        content += settings.template.link +
+                  methods.timer_instance(opts.index);
 
         $wrapper = $(settings.template.wrapper);
         if (opts.li.attr('data-aria-labelledby')) {
@@ -397,9 +398,10 @@
       },
 
       set_target : function () {
-        var cl = settings.$li.attr('data-class'),
-            id = settings.$li.attr('data-id'),
-            sel = settings.$li.attr('data-selector'),
+        var is_phone = methods.is_phone(),
+            cl = is_phone?null:settings.$li.attr('data-class'),
+            id = is_phone?null:settings.$li.attr('data-id'),
+            sel = is_phone?null:settings.$li.attr('data-selector'),
             $sel = function () {
               if (id) {
                 return $(settings.document.getElementById(id));
