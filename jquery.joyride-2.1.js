@@ -121,6 +121,12 @@
                 methods.show();
                 methods.startTimer();
               } else {
+                // Check to see if the next thing is visible,
+                // otherwise wait for whatever appropriate user action
+                if (methods.get_target(settings.$li.next()).length === 0) {
+                    return;
+                }
+
                 methods.hide();
                 methods.show();
               }
@@ -396,25 +402,26 @@
       set_next_tip : function () {
         settings.$next_tip = $('.joyride-tip-guide[data-index=' + settings.$li.index() + ']');
       },
+      
+      get_target : function(li) {
+        var is_phone = methods.is_phone(),
+            cl = is_phone?null:li.attr('data-class'),
+            id = is_phone?null:li.attr('data-id'),
+            sel = is_phone?null:li.attr('data-selector');
+
+        if (id) {
+          return $('#' + id);
+        } else if (cl) {
+          return $('.' + cl).filter(":visible").first();
+        } else if (sel){
+            return $(sel).first();
+        } else {
+          return $('body');
+        }
+      },
 
       set_target : function () {
-        var is_phone = methods.is_phone(),
-            cl = is_phone?null:settings.$li.attr('data-class'),
-            id = is_phone?null:settings.$li.attr('data-id'),
-            sel = is_phone?null:settings.$li.attr('data-selector'),
-            $sel = function () {
-              if (id) {
-                return $(settings.document.getElementById(id));
-              } else if (cl) {
-                return $('.' + cl).filter(":visible").first();
-              } else if (sel){
-                  return $(sel).first();
-              } else {
-                return $('body');
-              }
-            };
-
-        settings.$target = $sel();
+        settings.$target = methods.get_target(settings.$li);
       },
 
       scroll_to : function () {
