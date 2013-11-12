@@ -48,8 +48,10 @@ body {
 .joyride-tip-guide span.joyride-nub {
   display: block;
   position: absolute;
+  left: 22px;
   width: 0;
   height: 0;
+  border: solid 14px;
   border: solid 14px;
 }
 
@@ -87,8 +89,6 @@ body {
   border-bottom-width: 0;
   bottom: -14px;
   bottom: none;
-  left: 50%;
-  margin-left: -14px;
 }
 
 .joyride-tip-guide span.joyride-nub.right {
@@ -115,8 +115,6 @@ body {
   left: -14px;
   right: auto;
   bottom: none;
-  top: 50%;
-  margin-top: -14px;
 }
 
 .joyride-tip-guide span.joyride-nub.top-right {

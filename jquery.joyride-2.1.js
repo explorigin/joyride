@@ -188,11 +188,10 @@
         opts.tip_class = opts.tip_class || '';
 
         $blank = $(settings.template.tip).addClass(opts.tip_class);
-        content = $.trim($(opts.li).html());
-        if (content.indexOf('joyride-next-tip') == -1)
-          content += methods.button_text(opts.button_text);
-        content += settings.template.link +
-                  methods.timer_instance(opts.index);
+        content = $.trim($(opts.li).html()) +
+          methods.button_text(opts.button_text) +
+          settings.template.link +
+          methods.timer_instance(opts.index);
 
         $wrapper = $(settings.template.wrapper);
         if (opts.li.attr('data-aria-labelledby')) {
@@ -404,10 +403,9 @@
       },
       
       get_target : function(li) {
-        var is_phone = methods.is_phone(),
-            cl = is_phone?null:li.attr('data-class'),
-            id = is_phone?null:li.attr('data-id'),
-            sel = is_phone?null:li.attr('data-selector');
+        var cl = li.attr('data-class'),
+            id = li.attr('data-id'),
+            sel = li.attr('data-selector');
 
         if (id) {
           return $('#' + id);
@@ -490,16 +488,12 @@
 
         if (!/body/i.test(settings.$target.selector)) {
             var
-              topAdjustment = settings.tipSettings.tipAdjustmentY ?
-                  parseInt(settings.tipSettings.tipAdjustmentY) :
-                  (settings.$target.height() - settings.$next_tip.height()) / 2,
-              leftAdjustment = settings.tipSettings.tipAdjustmentX ?
-                  parseInt(settings.tipSettings.tipAdjustmentX) :
-                  (settings.$target.width() - settings.$next_tip.width()) / 2;
+              topAdjustment = settings.tipSettings.tipAdjustmentY ? parseInt(settings.tipSettings.tipAdjustmentY) : 0,
+              leftAdjustment = settings.tipSettings.tipAdjustmentX ? parseInt(settings.tipSettings.tipAdjustmentX) : 0;
 
             if (methods.bottom()) {
               settings.$next_tip.css({
-                top: (settings.$target.offset().top + nub_height + settings.$target.outerHeight()),
+                top: (settings.$target.offset().top + nub_height + settings.$target.outerHeight() + topAdjustment),
                 left: settings.$target.offset().left + leftAdjustment});
 
               if (/right/i.test(settings.tipSettings.nubPosition)) {
@@ -511,7 +505,7 @@
             } else if (methods.top()) {
 
               settings.$next_tip.css({
-                top: (settings.$target.offset().top - settings.$next_tip.outerHeight() - nub_height),
+                top: (settings.$target.offset().top - settings.$next_tip.outerHeight() - nub_height + topAdjustment),
                 left: settings.$target.offset().left + leftAdjustment});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'bottom');
@@ -520,7 +514,7 @@
 
               settings.$next_tip.css({
                 top: settings.$target.offset().top + topAdjustment,
-                left: (settings.$target.outerWidth() + settings.$target.offset().left + nub_width)});
+                left: (settings.$target.outerWidth() + settings.$target.offset().left + nub_width) + leftAdjustment});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'left');
 
@@ -528,7 +522,7 @@
 
               settings.$next_tip.css({
                 top: settings.$target.offset().top + topAdjustment,
-                left: (settings.$target.offset().left - settings.$next_tip.outerWidth() - nub_width)});
+                left: (settings.$target.offset().left - settings.$next_tip.outerWidth() - nub_width) + leftAdjustment});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'right');
 
@@ -935,4 +929,3 @@
   };
 
 }(jQuery, this));
-
