@@ -34,6 +34,7 @@
       'tipContainer'         : 'body',    // Where will the tip be attached
       'modal'                : false,     // Whether to cover page with modal during the tour
       'expose'               : false,     // Whether to expose the elements at each step in the tour (requires modal:true)
+      'requireTarget'        : false,     // Require that the next step's target exist before advancing
       'postExposeCallback'   : $.noop,    // A method to call after an element has been exposed
       'preRideCallback'      : $.noop,    // A method to call before the tour starts (passed index, tip, and cloned exposed element)
       'postRideCallback'     : $.noop,    // A method to call once the tour closes (canceled or complete)
@@ -121,9 +122,8 @@
                 methods.show();
                 methods.startTimer();
               } else {
-                // Check to see if the next thing is visible,
-                // otherwise wait for whatever appropriate user action
-                if (methods.get_target(settings.$li.next()).length === 0) {
+                // Check to see if the next thing is visible, otherwise wait for whatever appropriate user action.
+                if (settings.requireTarget && methods.get_target(settings.$li.next()).length === 0) {
                     return;
                 }
 
