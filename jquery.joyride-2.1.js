@@ -128,7 +128,7 @@
                 }
 
                 methods.hide();
-                methods.show();
+                setTimeout(methods.show, 0); 
               }
 
             });
